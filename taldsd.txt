@@ -1,0 +1,38 @@
+%option noyywrap
+%option nodefault
+%option yylineno
+
+
+
+%{
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+%}
+
+
+TAG_ABERTURA <h[1-6]>|<[a-z]+" "[a-z]+(_[a-z]+)?\=\".+?\">
+TAG_FECHAMENTO<\/h[1-6]>|<\/[a-z]+>
+TAG_ISOLADA<[a-z]+" "\/>
+CONTEUDO[a-zA-Z]+|<[0-9]+>|<\/[a-z]+.\/>
+
+
+%%
+{TAG_ABERTURA} printf ("TAG_ABERTURA: %s \n", yytext);
+{TAG_FECHAMENTO} printf ("TAG_FECHAMENTO: %s \n", yytext);
+{TAG_ISOLADA} printf ("TAG_ISOLADA: %s \n", yytext);
+{CONTEUDO} printf ("CONTEUDO: %s \n", yytext);
+
+<<EOF>> exit(0);
+
+.   ;
+"\n"    ;
+%%
+
+
+int main() {
+    yyin = fopen("lexema.txt","r");
+    yylex();
+    return 0;
+}
+    
