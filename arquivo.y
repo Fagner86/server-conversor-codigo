@@ -32,6 +32,7 @@ COMANDO : PRINT ABREP VARIAVEIS FECHAP FIM_DE_LINHA
         printf("console.log(");
         imprimirVariaveis(variaveis);
         printf(");\n");
+        fflush(stdout); // Força a exibição imediata da saída
         free(variaveis);
     }
     | PRINT ABREP VARIAVEIS FECHAP
@@ -40,9 +41,11 @@ COMANDO : PRINT ABREP VARIAVEIS FECHAP FIM_DE_LINHA
         printf("console.log(");
         imprimirVariaveis(variaveis);
         printf(");\n");
+        fflush(stdout); // Força a exibição imediata da saída
         free(variaveis);
     }
     ;
+
 
 
 VARIAVEIS : VALOR

@@ -437,8 +437,8 @@ static const yytype_int8 yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    26,    26,    27,    29,    37,    48,    49,    52,    53,
-      54
+       0,    26,    26,    27,    29,    38,    51,    52,    55,    56,
+      57
 };
 #endif
 
@@ -1349,6 +1349,7 @@ yyreduce:
         printf("console.log(");
         imprimirVariaveis(variaveis);
         printf(");\n");
+        fflush(stdout); // Força a exibição imediata da saída
         free(variaveis);
     ;}
     break;
@@ -1356,12 +1357,13 @@ yyreduce:
   case 5:
 
 /* Line 1455 of yacc.c  */
-#line 38 "arquivo.y"
+#line 39 "arquivo.y"
     { 
         char *variaveis = (yyvsp[(3) - (4)].str);
         printf("console.log(");
         imprimirVariaveis(variaveis);
         printf(");\n");
+        fflush(stdout); // Força a exibição imediata da saída
         free(variaveis);
     ;}
     break;
@@ -1369,28 +1371,28 @@ yyreduce:
   case 8:
 
 /* Line 1455 of yacc.c  */
-#line 52 "arquivo.y"
+#line 55 "arquivo.y"
     { (yyval.str) = (yyvsp[(1) - (1)].str); ;}
     break;
 
   case 9:
 
 /* Line 1455 of yacc.c  */
-#line 53 "arquivo.y"
+#line 56 "arquivo.y"
     { (yyval.str) = (yyvsp[(1) - (1)].str); ;}
     break;
 
   case 10:
 
 /* Line 1455 of yacc.c  */
-#line 54 "arquivo.y"
+#line 57 "arquivo.y"
     { (yyval.str) = (yyvsp[(1) - (1)].str); ;}
     break;
 
 
 
 /* Line 1455 of yacc.c  */
-#line 1394 "arquivo.tab.c"
+#line 1396 "arquivo.tab.c"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -1602,7 +1604,7 @@ yyreturn:
 
 
 /* Line 1675 of yacc.c  */
-#line 58 "arquivo.y"
+#line 61 "arquivo.y"
 
 void imprimirVariaveis(char *variaveis) {
     char *token = strtok(variaveis, ",");
