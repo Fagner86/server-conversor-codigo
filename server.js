@@ -13,51 +13,49 @@ app.use(bodyParser.json());
 
 app.use(express.static('build'));
 
+const filePath = path.join(__dirname, 'arquivo.print'); // Define o caminho do arquivo fora da função de rota
+
 app.post('/converter', (req, res) => {
   const codeObject = req.body;
   const code = codeObject.code;
   console.log('chegou aqui', code);
-  
-    const filePath = path.join(__dirname, 'arquivo.print');
-    fs.writeFileSync(filePath, code);
-  
-    console.log('Code written to arquivo.print');
-  
-    const parserPath = path.join(__dirname, 'parser.exe');
-    console.log('Executing parser.exe:', parserPath);
-  
-    const parser = spawn(parserPath, [filePath]);
-  
-    let output = '';
-    let isError = false; // Adiciona uma variável para rastrear erros
-  
-    parser.stdout.on('data', (data) => {
-      console.log('Parser output data:', data.toString());
-      output += data.toString();
-    });
-  
-    parser.stderr.on('data', (data) => {
-      console.error('Parser error:', data.toString());
-      isError = true; // Define a variável de erro em caso de erro
-    });
-  
-    parser.on('close', (code) => {
-      console.log('Parser process closed with code:', code);
-  
-      fs.unlinkSync(filePath);
-  
-      if (isError) {
-        // Se houver erro, ainda envie a saída (pode conter parte da saída) para o frontend
-        res.send(output);
-      } else {
-        // Se não houver erro, envie a saída completa para o frontend
-        res.send(output);
-      }
-    });
-});
 
+  fs.writeFileSync(filePath, code); // Sobrescreve o arquivo com o novo conteúdo
+
+  console.log('Code written to arquivo.print');
+
+  const parserPath = path.join(__dirname, 'parser.exe');
+  console.log('Executing parser.exe:', parserPath);
+
+  const parser = spawn(parserPath, [filePath]);
+
+  let output = '';
+  let isError = false;
+
+  parser.stdout.on('data', (data) => {
+    console.log('Parser output data:', data.toString());
+    output += data.toString();
+  });
+
+  parser.stderr.on('data', (data) => {
+    console.error('Parser error:', data.toString());
+    isError = true;
+  });
+
+  parser.on('close', (code) => {
+    console.log('Parser process closed with code:', code);
+
+    // Limpa o conteúdo do arquivo, mas mantém o arquivo em si
+    fs.writeFileSync(filePath, '');
+
+    if (isError) {
+      res.send(output);
+    } else {
+      res.send(output);
+    }
+  });
+});
 
 app.listen(port, () => {
   console.log(`Servidor rodando na porta ${port}`);
 });
-
