@@ -1,29 +1,40 @@
+%{
+#include "arquivo.tab.h"
+extern YYSTYPE yylval;
+char* processString(char* input);
+%}
+
 %option noyywrap
 %option nodefault
 %option yylineno
 
-%{
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
+BRANCO [ \t]
+ESPACO {BRANCO}+
 
-// Buffer para armazenar o resultado da conversão
-char result[4096];
+DIGITO [0-9]
+NUMERO {DIGITO}+
 
-%}
+LETRA [A-Za-z]
+STRING \"[^"]*\"
+IDENTIFICADOR {LETRA}+
 
 %%
-"count = 0"       { strcat(result, "let count = 0;\n"); }
-"while count < 5:"   { strcat(result, "while (count < 5) {\n"); }
-"    print(\"Contagem:\", count)"  { strcat(result, "    console.log(\"Contagem:\", count);\n"); }
-"    count += 1"    { strcat(result, "    count += 1;\n"); }
-.    { strcat(result, yytext); }
+","          { return VIRGULA; }
+"print"      { return PRINT; }
+"("          { return ABREP; }
+")"          { return FECHAP; }
+{ESPACO}+
+{NUMERO}     { yylval.str = strdup(yytext); return NUM; }
+{STRING}     { yylval.str = processString(yytext); return STR; }
+{DIGITO}+    { yylval.str = strdup(yytext); return NUM; }
+{IDENTIFICADOR}  { yylval.str = strdup(yytext); return ID; }
+\n           { return FIM_DE_LINHA; }
+.            { return yytext[0]; } // Retornar o próprio caractere
 %%
 
-// Esta função é chamada no código do servidor para analisar a entrada fornecida.
-const char* parseInput(const char *input) {
-    result[0] = '\0'; // Inicializa o buffer de resultado
-    yy_scan_string(input);
-    yylex();
-    return result;
+char* processString(char* input) {
+    char* output = (char*)malloc(strlen(input) - 1);
+    strncpy(output, input + 1, strlen(input) - 2);
+    output[strlen(input) - 2] = '\0';
+    return output;
 }
