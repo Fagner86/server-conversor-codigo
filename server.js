@@ -21,14 +21,39 @@ app.post('/converter', (req, res) => {
   console.log('chegou aqui', code);
 
   fs.writeFileSync(filePath, code); // Sobrescreve o arquivo com o novo conteúdo
-  let isError = false;
+
   console.log('Code written to arquivo.print');
 
+  const parserPath = path.join(__dirname, './parser.exe');
+  console.log('Executing parser.exe:', parserPath);
+
+  const parser = spawn(parserPath, [filePath]);
+
+  let output = '';
+  let isError = false;
+
+  parser.stdout.on('data', (data) => {
+    console.log('Parser output data:', data.toString());
+    output += data.toString();
+  });
+
+  parser.stderr.on('data', (data) => {
+    console.error('Parser error:', data.toString());
+    isError = true;
+  });
+
+  parser.on('close', (code) => {
+    console.log('Parser process closed with code:', code);
+
+    // Limpa o conteúdo do arquivo, mas mantém o arquivo em si
+    fs.writeFileSync(filePath, '');
+
     if (isError) {
-      res.send(code);
+      res.send(output);
     } else {
-      res.send(code);
+      res.send(output);
     }
+  });
 });
 
 app.listen(port, () => {
