@@ -6,3 +6,14 @@ x = 'oiii'
 numero = 10
 print("x")
 print(10)
+numero = 10
+if (numero > 0)
+    print("O numero e positivo.")
+elif (numero < 0)
+    print("O numero e negativo.")
+else
+    print("O numero e zero.")  
+print("x")
+print(34456567)
+x = 'oiii'
+numero = 10                      

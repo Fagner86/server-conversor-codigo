@@ -10,8 +10,9 @@
     char *str;
 }
 
-%token<str> PRINT ABREP FECHAP VIRGULA ID STR NUM FIM_ENTRADA FIM_DE_LINHA ATRIB
-%type<str> COMANDOS COMANDO VARIAVEIS VALOR
+
+%token<str> PRINT ABREP FECHAP VIRGULA ID STR NUM FIM_ENTRADA FIM_DE_LINHA ATRIB IF ELIF ELSE MAIOR MENOR IGUAL
+%type<str> COMANDOS COMANDO VARIAVEIS VALOR CONDICAO
 
 %%
 
@@ -35,14 +36,45 @@ COMANDO : PRINT ABREP VARIAVEIS FECHAP FIM_DE_LINHA
     | ID ATRIB VALOR FIM_DE_LINHA
     {
         printf("let %s = %s;\n", $1, $3);
+    } 
+    | ID ATRIB CONDICAO FIM_DE_LINHA
+    {
+        printf("let %s;\nif (%s) {\n", $1, $3);
+    }
+    | IF ABREP CONDICAO FECHAP FIM_DE_LINHA
+    {
+        printf("if (%s) {\n", $3);
+    }
+    | ELIF ABREP CONDICAO FECHAP FIM_DE_LINHA
+    {
+        printf("} else if (%s) {\n", $3);
+    }
+    | ELSE FIM_DE_LINHA
+    {
+        printf("} else {\n");
     }
     ;
+
+CONDICAO : ID MAIOR VALOR {
+    char *temp = (char *)malloc(strlen($1) + strlen($3) + strlen(" > ") + 1);
+    sprintf(temp, "%s > %s", $1, $3);
+    $$ = temp;
+}
+| ID MENOR VALOR {
+    char *temp = (char *)malloc(strlen($1) + strlen($3) + strlen(" < ") + 1);
+    sprintf(temp, "%s < %s", $1, $3);
+    $$ = temp;
+}
+| ID IGUAL VALOR {
+    char *temp = (char *)malloc(strlen($1) + strlen($3) + strlen(" === ") + 1);
+    sprintf(temp, "%s === %s", $1, $3);
+    $$ = temp;
+};
 
 VALOR : ID { $$ = $1; }
       | STR { $$ = $1; }
       | NUM { $$ = $1; }
       ;
-
 
 %%
 void yyerror(const char *msg) {

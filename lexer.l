@@ -27,11 +27,17 @@ IDENTIFICADOR {LETRA}+
 "("          { return ABREP; }
 ")"          { return FECHAP; }
 "="          { return ATRIB; }
+"if"         { return IF; } 
+"elif"       { return ELIF; }
+"else"       { return ELSE; }
+">"          { return MAIOR; }
+"<"          { return MENOR; }
+"==="         { return IGUAL; }
 {IDENTIFICADOR} { yylval.str = strdup(yytext); return ID;}
-{STRING} { yylval.str = strdup(yytext); return STR;}
+{STRING}     { yylval.str = strdup(yytext); return STR;}
 {STRING_SIMPLES} { yylval.str = strdup(yytext); return STR;}
-{NUMERO} { yylval.str = strdup(yytext); return NUM; }
-<<EOF>> { return FIM_ENTRADA; } // Return FIM_ENTRADA token at end of input
+{NUMERO}     { yylval.str = strdup(yytext); return NUM; }
+<<EOF>>      { return FIM_ENTRADA; }
 {ESPACO}    { /* Ignore whitespace */ }
 .           { yyerror("Token desconhecido."); }
 "\n"        { yylineno++; return FIM_DE_LINHA; }
