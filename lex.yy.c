@@ -289,21 +289,21 @@ static void yy_fatal_error YY_PROTO(( yyconst char msg[] ));
 	*yy_cp = '\0'; \
 	yy_c_buf_p = yy_cp;
 
-#define YY_NUM_RULES 12
-#define YY_END_OF_BUFFER 13
-static yyconst short int yy_acclist[40] =
+#define YY_NUM_RULES 11
+#define YY_END_OF_BUFFER 12
+static yyconst short int yy_acclist[38] =
     {   0,
-       13,   11,   12,    5,   11,   12,   10,   12,   11,   12,
-        3,   11,   12,    4,   11,   12,    1,   11,   12,    6,
-        8,   11,   12,    9,   11,   12,    9,   11,   12,    5,
-        7,    6,    8,    9,    9,    9,    9,    2,    9
+       12,    9,   11,    8,    9,   11,   10,   11,    9,   11,
+        3,    9,   11,    4,    9,   11,    1,    9,   11,    7,
+        9,   11,    5,    9,   11,    5,    9,   11,    8,    6,
+        7,    5,    5,    5,    5,    2,    5
     } ;
 
 static yyconst short int yy_accept[25] =
     {   0,
         1,    1,    1,    2,    4,    7,    9,   11,   14,   17,
-       20,   24,   27,   30,   31,   31,   32,   34,   35,   36,
-       37,   38,   40,   40
+       20,   23,   26,   29,   30,   30,   31,   32,   33,   34,
+       35,   36,   38,   38
     } ;
 
 static yyconst int yy_ec[256] =
@@ -393,10 +393,11 @@ char *yytext;
 #line 1 "lexer.l"
 #define INITIAL 0
 #line 2 "lexer.l"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include "arquivo.tab.h"
-extern YYSTYPE yylval;
-char* processString(char* input);
-#line 400 "lex.yy.c"
+#line 401 "lex.yy.c"
 
 /* Macros after this point can all be overridden by user definitions in
  * section 1.
@@ -547,9 +548,10 @@ YY_DECL
 	register char *yy_cp, *yy_bp;
 	register int yy_act;
 
-#line 21 "lexer.l"
+#line 23 "lexer.l"
 
-#line 553 "lex.yy.c"
+
+#line 555 "lex.yy.c"
 
 	if ( yy_init )
 		{
@@ -642,67 +644,64 @@ do_action:	/* This label is used only to access EOF actions. */
 	{ /* beginning of action switch */
 case 1:
 YY_RULE_SETUP
-#line 22 "lexer.l"
+#line 25 "lexer.l"
 { return VIRGULA; }
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 23 "lexer.l"
+#line 26 "lexer.l"
 { return PRINT; }
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 24 "lexer.l"
+#line 27 "lexer.l"
 { return ABREP; }
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 25 "lexer.l"
+#line 28 "lexer.l"
 { return FECHAP; }
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 26 "lexer.l"
-
+#line 29 "lexer.l"
+{ yylval.str = strdup(yytext); return ID;}
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 27 "lexer.l"
-{ yylval.str = strdup(yytext); return NUM; }
+#line 30 "lexer.l"
+{ yylval.str = strdup(yytext); return STR;}
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 28 "lexer.l"
-{ yylval.str = processString(yytext); return STR; }
+#line 31 "lexer.l"
+{ yylval.str = strdup(yytext); return NUM; }
+	YY_BREAK
+case YY_STATE_EOF(INITIAL):
+#line 32 "lexer.l"
+{ return FIM_ENTRADA; } // Return FIM_ENTRADA token at end of input
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 29 "lexer.l"
-{ yylval.str = strdup(yytext); return NUM; }
+#line 33 "lexer.l"
+{ /* Ignore whitespace */ }
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 30 "lexer.l"
-{ yylval.str = strdup(yytext); return ID; }
+#line 34 "lexer.l"
+{ yyerror("Token desconhecido."); }
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 31 "lexer.l"
-{ return FIM_DE_LINHA; }
+#line 35 "lexer.l"
+{ yylineno++; return FIM_DE_LINHA; }
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 32 "lexer.l"
-{ return yytext[0]; } // Retornar o próprio caractere
-	YY_BREAK
-case 12:
-YY_RULE_SETUP
-#line 33 "lexer.l"
+#line 36 "lexer.l"
 YY_FATAL_ERROR( "flex scanner jammed" );
 	YY_BREAK
-#line 704 "lex.yy.c"
-			case YY_STATE_EOF(INITIAL):
-				yyterminate();
+#line 705 "lex.yy.c"
 
 	case YY_END_OF_BUFFER:
 		{
@@ -1584,12 +1583,5 @@ int main()
 	return 0;
 	}
 #endif
-#line 33 "lexer.l"
+#line 36 "lexer.l"
 
-
-char* processString(char* input) {
-    char* output = (char*)malloc(strlen(input) - 1);
-    strncpy(output, input + 1, strlen(input) - 2);
-    output[strlen(input) - 2] = '\0';
-    return output;
-}

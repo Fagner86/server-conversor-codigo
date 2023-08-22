@@ -1,7 +1,8 @@
 %{
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include "arquivo.tab.h"
-extern YYSTYPE yylval;
-char* processString(char* input);
 %}
 
 %option noyywrap
@@ -15,26 +16,21 @@ DIGITO [0-9]
 NUMERO {DIGITO}+
 
 LETRA [A-Za-z]
+
 STRING \"[^"]*\"
 IDENTIFICADOR {LETRA}+
 
 %%
+
 ","          { return VIRGULA; }
 "print"      { return PRINT; }
 "("          { return ABREP; }
 ")"          { return FECHAP; }
-{ESPACO}+
-{NUMERO}     { yylval.str = strdup(yytext); return NUM; }
-{STRING}     { yylval.str = processString(yytext); return STR; }
-{DIGITO}+    { yylval.str = strdup(yytext); return NUM; }
-{IDENTIFICADOR}  { yylval.str = strdup(yytext); return ID; }
-\n           { return FIM_DE_LINHA; }
-.            { return yytext[0]; } // Retornar o próprio caractere
+{IDENTIFICADOR} { yylval.str = strdup(yytext); return ID;}
+{STRING} { yylval.str = strdup(yytext); return STR;}
+{NUMERO} { yylval.str = strdup(yytext); return NUM; }
+<<EOF>> { return FIM_ENTRADA; } // Return FIM_ENTRADA token at end of input
+{ESPACO}    { /* Ignore whitespace */ }
+.           { yyerror("Token desconhecido."); }
+"\n"        { yylineno++; return FIM_DE_LINHA; }
 %%
-
-char* processString(char* input) {
-    char* output = (char*)malloc(strlen(input) - 1);
-    strncpy(output, input + 1, strlen(input) - 2);
-    output[strlen(input) - 2] = '\0';
-    return output;
-}

@@ -2,16 +2,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "arquivo.tab.h"
 #include "lex.yy.c"
-
-extern FILE* yyin;
-
-void yyerror(const char *msg) {
-    if (yyparse() != 0) {
-        printf("Erro de análise: %s\n", msg);
-    }
-    exit(0);
-}
 %}
 
 %union {
@@ -26,27 +18,16 @@ void yyerror(const char *msg) {
 COMANDOS : COMANDO
          | COMANDOS COMANDO
          ;
+
 COMANDO : PRINT ABREP VARIAVEIS FECHAP FIM_DE_LINHA
     { 
-        char *variaveis = $3;
-        printf("console.log(");
-        imprimirVariaveis(variaveis);
-        printf(");\n");
-        fflush(stdout); // Força a exibição imediata da saída
-        free(variaveis);
+        printf("console.log(%s);\n", $3);
     }
     | PRINT ABREP VARIAVEIS FECHAP
     { 
-        char *variaveis = $3;
-        printf("console.log(");
-        imprimirVariaveis(variaveis);
-        printf(");\n");
-        fflush(stdout); // Força a exibição imediata da saída
-        free(variaveis);
+        printf("console.log(%s);\n", $3);
     }
     ;
-
-
 
 VARIAVEIS : VALOR
           | VALOR VIRGULA VARIAVEIS
@@ -59,19 +40,7 @@ VALOR : ID { $$ = $1; }
 
 
 %%
-void imprimirVariaveis(char *variaveis) {
-    char *token = strtok(variaveis, ",");
-    while (token != NULL) {
-        if (strlen(token) >= 2 && token[0] == '\"' && token[strlen(token) - 1] == '\"') {
-            printf("\"%s\"", token);
-        } else {
-            printf("%s", token);
-        }
-        token = strtok(NULL, ",");
-        if (token != NULL) {
-            printf(", ");
-        }
-    }
+void yyerror(const char *msg) {
 }
 
 int main(int argc, char **argv) {
@@ -88,7 +57,7 @@ int main(int argc, char **argv) {
     
     yyin = file;
     while (yyparse() == 0) {
-        // Continue processando o arquivo
+        // Continue processing the file
     }
     
     printf("PROGRAMA RECONHECIDO!!!\n");

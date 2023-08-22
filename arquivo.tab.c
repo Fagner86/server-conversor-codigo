@@ -73,20 +73,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "arquivo.tab.h"
 #include "lex.yy.c"
-
-extern FILE* yyin;
-
-void yyerror(const char *msg) {
-    if (yyparse() != 0) {
-        printf("Erro de análise: %s\n", msg);
-    }
-    exit(0);
-}
 
 
 /* Line 189 of yacc.c  */
-#line 90 "arquivo.tab.c"
+#line 82 "arquivo.tab.c"
 
 /* Enabling traces.  */
 #ifndef YYDEBUG
@@ -132,14 +124,14 @@ typedef union YYSTYPE
 {
 
 /* Line 214 of yacc.c  */
-#line 17 "arquivo.y"
+#line 9 "arquivo.y"
 
     char *str;
 
 
 
 /* Line 214 of yacc.c  */
-#line 143 "arquivo.tab.c"
+#line 135 "arquivo.tab.c"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
@@ -151,7 +143,7 @@ typedef union YYSTYPE
 
 
 /* Line 264 of yacc.c  */
-#line 155 "arquivo.tab.c"
+#line 147 "arquivo.tab.c"
 
 #ifdef short
 # undef short
@@ -437,8 +429,8 @@ static const yytype_int8 yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    26,    26,    27,    29,    38,    51,    52,    55,    56,
-      57
+       0,    18,    18,    19,    22,    26,    32,    33,    36,    37,
+      38
 };
 #endif
 
@@ -1343,56 +1335,46 @@ yyreduce:
         case 4:
 
 /* Line 1455 of yacc.c  */
-#line 30 "arquivo.y"
+#line 23 "arquivo.y"
     { 
-        char *variaveis = (yyvsp[(3) - (5)].str);
-        printf("console.log(");
-        imprimirVariaveis(variaveis);
-        printf(");\n");
-        fflush(stdout); // Força a exibição imediata da saída
-        free(variaveis);
+        printf("console.log(%s);\n", (yyvsp[(3) - (5)].str));
     ;}
     break;
 
   case 5:
 
 /* Line 1455 of yacc.c  */
-#line 39 "arquivo.y"
+#line 27 "arquivo.y"
     { 
-        char *variaveis = (yyvsp[(3) - (4)].str);
-        printf("console.log(");
-        imprimirVariaveis(variaveis);
-        printf(");\n");
-        fflush(stdout); // Força a exibição imediata da saída
-        free(variaveis);
+        printf("console.log(%s);\n", (yyvsp[(3) - (4)].str));
     ;}
     break;
 
   case 8:
 
 /* Line 1455 of yacc.c  */
-#line 55 "arquivo.y"
+#line 36 "arquivo.y"
     { (yyval.str) = (yyvsp[(1) - (1)].str); ;}
     break;
 
   case 9:
 
 /* Line 1455 of yacc.c  */
-#line 56 "arquivo.y"
+#line 37 "arquivo.y"
     { (yyval.str) = (yyvsp[(1) - (1)].str); ;}
     break;
 
   case 10:
 
 /* Line 1455 of yacc.c  */
-#line 57 "arquivo.y"
+#line 38 "arquivo.y"
     { (yyval.str) = (yyvsp[(1) - (1)].str); ;}
     break;
 
 
 
 /* Line 1455 of yacc.c  */
-#line 1396 "arquivo.tab.c"
+#line 1378 "arquivo.tab.c"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -1604,21 +1586,9 @@ yyreturn:
 
 
 /* Line 1675 of yacc.c  */
-#line 61 "arquivo.y"
+#line 42 "arquivo.y"
 
-void imprimirVariaveis(char *variaveis) {
-    char *token = strtok(variaveis, ",");
-    while (token != NULL) {
-        if (strlen(token) >= 2 && token[0] == '\"' && token[strlen(token) - 1] == '\"') {
-            printf("\"%s\"", token);
-        } else {
-            printf("%s", token);
-        }
-        token = strtok(NULL, ",");
-        if (token != NULL) {
-            printf(", ");
-        }
-    }
+void yyerror(const char *msg) {
 }
 
 int main(int argc, char **argv) {
@@ -1635,7 +1605,7 @@ int main(int argc, char **argv) {
     
     yyin = file;
     while (yyparse() == 0) {
-        // Continue processando o arquivo
+        // Continue processing the file
     }
     
     printf("PROGRAMA RECONHECIDO!!!\n");
