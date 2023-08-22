@@ -41,6 +41,10 @@ COMANDO : PRINT ABREP VARIAVEIS FECHAP FIM_DE_LINHA
     {
         printf("let %s;\nif (%s) {\n", $1, $3);
     }
+    | IF CONDICAO FIM_DE_LINHA
+    {
+        printf("if (%s) {\n", $2);
+    }
     | IF ABREP CONDICAO FECHAP FIM_DE_LINHA
     {
         printf("if (%s) {\n", $3);
@@ -49,14 +53,24 @@ COMANDO : PRINT ABREP VARIAVEIS FECHAP FIM_DE_LINHA
     {
         printf("} else if (%s) {\n", $3);
     }
+    | ELIF CONDICAO FIM_DE_LINHA
+    {
+        printf("} else if (%s) {\n", $2);
+    }
     | ELSE FIM_DE_LINHA
     {
         printf("} else {\n");
     }
-    | WHILE ABREP CONDICAO FECHAP DOIS_PONTOS
+    | WHILE ABREP CONDICAO FECHAP DOIS_PONTOS 
+    {
+        printf("while (%s) {\n", $3);
+        printf("%s\n", $4);
+        printf("}\n");
+    }
+    | WHILE CONDICAO DOIS_PONTOS 
     {
         printf("while (%s) {\n", $2);
-        printf("%s\n", $4);
+        printf("%s\n", $3);
         printf("}\n");
     }
     ;
