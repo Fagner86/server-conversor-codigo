@@ -47,7 +47,8 @@
      STR = 263,
      NUM = 264,
      FIM_ENTRADA = 265,
-     FIM_DE_LINHA = 266
+     FIM_DE_LINHA = 266,
+     ATRIB = 267
    };
 #endif
 
@@ -65,7 +66,7 @@ typedef union YYSTYPE
 
 
 /* Line 1676 of yacc.c  */
-#line 69 "arquivo.tab.h"
+#line 70 "arquivo.tab.h"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */

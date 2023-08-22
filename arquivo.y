@@ -10,7 +10,7 @@
     char *str;
 }
 
-%token<str> PRINT ABREP FECHAP VIRGULA ID STR NUM FIM_ENTRADA FIM_DE_LINHA
+%token<str> PRINT ABREP FECHAP VIRGULA ID STR NUM FIM_ENTRADA FIM_DE_LINHA ATRIB
 %type<str> COMANDOS COMANDO VARIAVEIS VALOR
 
 %%
@@ -18,6 +18,11 @@
 COMANDOS : COMANDO
          | COMANDOS COMANDO
          ;
+
+VARIAVEIS : VALOR
+          | ID ATRIB VALOR
+          | ID ATRIB VALOR VIRGULA VARIAVEIS
+          ;
 
 COMANDO : PRINT ABREP VARIAVEIS FECHAP FIM_DE_LINHA
     { 
@@ -27,11 +32,11 @@ COMANDO : PRINT ABREP VARIAVEIS FECHAP FIM_DE_LINHA
     { 
         printf("console.log(%s);\n", $3);
     }
+    | ID ATRIB VALOR FIM_DE_LINHA
+    {
+        printf("let %s = %s;\n", $1, $3);
+    }
     ;
-
-VARIAVEIS : VALOR
-          | VALOR VIRGULA VARIAVEIS
-          ;
 
 VALOR : ID { $$ = $1; }
       | STR { $$ = $1; }
@@ -41,6 +46,10 @@ VALOR : ID { $$ = $1; }
 
 %%
 void yyerror(const char *msg) {
+    if (strcmp(msg, "syntax error") != 0 || yytext[0] != '\0') {
+        fprintf(stderr, "Erro na linha %d: %s\n", yylineno, msg);
+    }
+    // Continue parsing after an error
 }
 
 int main(int argc, char **argv) {
