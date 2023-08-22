@@ -60,17 +60,25 @@ COMANDO : PRINT ABREP VARIAVEIS FECHAP FIM_DE_LINHA
     | ELSE FIM_DE_LINHA
     {
         printf("} else {\n");
+        
     }
-    | WHILE ABREP CONDICAO FECHAP DOIS_PONTOS 
+    | WHILE ABREP CONDICAO FECHAP DOIS_PONTOS FIM_DE_LINHA COMANDO
     {
         printf("while (%s) {\n", $3);
-        printf("%s\n", $4);
+        printf("%s\n", $6);
         printf("}\n");
     }
-    | WHILE CONDICAO DOIS_PONTOS 
+    | WHILE CONDICAO DOIS_PONTOS FIM_DE_LINHA COMANDO
     {
         printf("while (%s) {\n", $2);
-        printf("%s\n", $3);
+        printf("%s\n", $5);
+        printf("}\n");
+    }
+    ;
+    | WHILE VALOR DOIS_PONTOS FIM_DE_LINHA COMANDO
+    {
+        printf("while (%s) {\n", $2);
+        printf("%s\n", $5);
         printf("}\n");
     }
     ;

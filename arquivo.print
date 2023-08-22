@@ -8,21 +8,22 @@ numero = 10
 print("x")
 print(10)
 numero = 10
-if (numero > 0)
+if numero > 0
        print("O numero e positivo.")
 
-elif (numero < 0)
+elif numero < 0
     print("O numero e negativo.")
 
 else
-
-
     print("O numero e zero.")  
 x = 'oiii'
 
 print("x")
 print(34456567)     
 contador = 0
-while(contador > 5)
+while contador:
     print(Contador)
-    contador += 1                                                                                                                                                                                           JAVASCRIPT  let contador = 0;
+    print(Contado)
+
+print(Contador)
+  
