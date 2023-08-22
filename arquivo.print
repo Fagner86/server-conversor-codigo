@@ -22,3 +22,7 @@ x = 'oiii'
 
 print("x")
 print(34456567)     
+contador = 0
+while(contador > 5)
+    print(Contador)
+    contador += 1                                                                                                                                                                                           JAVASCRIPT  let contador = 0;

@@ -55,7 +55,9 @@
      MAIOR = 271,
      MENOR = 272,
      IGUAL = 273,
-     WHILE = 274
+     WHILE = 274,
+     MAISIGUAL = 275,
+     DOIS_PONTOS = 276
    };
 #endif
 
@@ -73,7 +75,7 @@ typedef union YYSTYPE
 
 
 /* Line 1676 of yacc.c  */
-#line 77 "arquivo.tab.h"
+#line 79 "arquivo.tab.h"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */

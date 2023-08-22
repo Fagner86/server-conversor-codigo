@@ -27,6 +27,7 @@ IDENTIFICADOR {LETRA}+
 "("          { return ABREP; }
 ")"          { return FECHAP; }
 "="          { return ATRIB; }
+"+="          { return MAISIGUAL; }
 "if"         { return IF; } 
 "elif"       { return ELIF; }
 "else"       { return ELSE; }
@@ -34,6 +35,7 @@ IDENTIFICADOR {LETRA}+
 "<"          { return MENOR; }
 "==="         { return IGUAL; }
 "while"      { return WHILE; }
+":"          { return DOIS_PONTOS; }
 {IDENTIFICADOR} { yylval.str = strdup(yytext); return ID;}
 {STRING}     { yylval.str = strdup(yytext); return STR;}
 {STRING_SIMPLES} { yylval.str = strdup(yytext); return STR;}
