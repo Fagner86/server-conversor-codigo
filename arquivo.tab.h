@@ -54,7 +54,8 @@
      ELSE = 270,
      MAIOR = 271,
      MENOR = 272,
-     IGUAL = 273
+     IGUAL = 273,
+     WHILE = 274
    };
 #endif
 
@@ -72,7 +73,7 @@ typedef union YYSTYPE
 
 
 /* Line 1676 of yacc.c  */
-#line 76 "arquivo.tab.h"
+#line 77 "arquivo.tab.h"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */

@@ -33,12 +33,13 @@ IDENTIFICADOR {LETRA}+
 ">"          { return MAIOR; }
 "<"          { return MENOR; }
 "==="         { return IGUAL; }
+"while"      { return WHILE; }
 {IDENTIFICADOR} { yylval.str = strdup(yytext); return ID;}
 {STRING}     { yylval.str = strdup(yytext); return STR;}
 {STRING_SIMPLES} { yylval.str = strdup(yytext); return STR;}
 {NUMERO}     { yylval.str = strdup(yytext); return NUM; }
 <<EOF>>      { return FIM_ENTRADA; }
-{ESPACO}    { /* Ignore whitespace */ }
+{ESPACO}+   { /* Ignore whitespace */ }
 .           { yyerror("Token desconhecido."); }
-"\n"        { yylineno++; return FIM_DE_LINHA; }
+"\n"+        { yylineno++; return FIM_DE_LINHA; }
 %%
