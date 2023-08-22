@@ -53,6 +53,12 @@ COMANDO : PRINT ABREP VARIAVEIS FECHAP FIM_DE_LINHA
     {
         printf("} else {\n");
     }
+    | WHILE ABREP CONDICAO FECHAP DOIS_PONTOS
+    {
+        printf("while (%s) {\n", $2);
+        printf("%s\n", $4);
+        printf("}\n");
+    }
     ;
 
 CONDICAO : ID MAIOR VALOR {
