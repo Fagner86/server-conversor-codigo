@@ -21,6 +21,8 @@ app.post('/converter', (req, res) => {
   console.log('chegou aqui', code);
 
   fs.writeFileSync(filePath, code); // Sobrescreve o arquivo com o novo conteúdo
+  fs.appendFileSync(filePath, '\n');
+
 
   console.log('Code written to arquivo.print');
 
