@@ -7,8 +7,14 @@ COPY package-lock.json .
 
 RUN npm install
 
+
+# Install flex
+RUN apt-get update && apt-get install -y flex
+
 COPY . .
 
 EXPOSE 8080
 
-CMD ["npm", "start"]
+# Command to run your application
+CMD ["node", "server.js"]
+
