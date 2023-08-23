@@ -57,8 +57,28 @@ COMANDO : PRINT ABREP VARIAVEIS FECHAP FIM_DE_LINHA
     {
         printf("} else {\n");
         
+    } | ELSE DOIS_PONTOS FIM_DE_LINHA
+    {
+        printf("} else {\n");
+        
     }
-    | WHILE CONDICAO DOIS_PONTOS FIM_DE_LINHA
+     | IF CONDICAO DOIS_PONTOS FIM_DE_LINHA
+    {
+        printf("if (%s) {\n", $2);
+    }
+    | IF ABREP CONDICAO FECHAP DOIS_PONTOS FIM_DE_LINHA
+    {
+        printf("if (%s) {\n", $3);
+    }
+    | ELIF ABREP CONDICAO FECHAP DOIS_PONTOS FIM_DE_LINHA
+    {
+        printf("} else if (%s) {\n", $3);
+    }
+    | ELIF CONDICAO DOIS_PONTOS FIM_DE_LINHA
+    {
+        printf("} else if (%s) {\n", $2);
+    }
+    |WHILE CONDICAO DOIS_PONTOS FIM_DE_LINHA
     {
         printf("while (%s) {\n", $2);
     }
@@ -115,7 +135,6 @@ void yyerror(const char *msg) {
     if (strcmp(msg, "syntax error") != 0 || yytext[0] != '\0') {
         fprintf(stderr, "Erro na linha %d: %s\n", yylineno, msg);
     }
-    // Continue parsing after an error
 }
 
 int main(int argc, char **argv) {
@@ -132,7 +151,6 @@ int main(int argc, char **argv) {
     
     yyin = file;
     while (yyparse() == 0) {
-        // Continue processing the file
     }
     
     printf("PROGRAMA RECONHECIDO!!!\n");
