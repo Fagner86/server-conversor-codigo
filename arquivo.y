@@ -11,7 +11,7 @@
 }
 
 
-%token<str> PRINT ABREP FECHAP VIRGULA ID STR NUM FIM_ENTRADA FIM_DE_LINHA ATRIB IF ELIF ELSE MAIOR MENOR IGUAL WHILE MAISIGUAL DOIS_PONTOS
+%token<str> PRINT ABREP FECHAP VIRGULA ID STR NUM FIM_ENTRADA FIM_DE_LINHA ATRIB IF ELIF ELSE MAIOR MENOR IGUAL WHILE MAISIGUAL DOIS_PONTOS ABRECHAVE FECHACHAVE DEF RETURN
 %type<str> COMANDOS COMANDO VARIAVEIS VALOR CONDICAO
 
 %%
@@ -26,10 +26,6 @@ VARIAVEIS : VALOR
           ;
 
 COMANDO : PRINT ABREP VARIAVEIS FECHAP FIM_DE_LINHA
-    { 
-        printf("console.log(%s);\n", $3);
-    }
-    | PRINT ABREP VARIAVEIS FECHAP
     { 
         printf("console.log(%s);\n", $3);
     }
@@ -62,26 +58,36 @@ COMANDO : PRINT ABREP VARIAVEIS FECHAP FIM_DE_LINHA
         printf("} else {\n");
         
     }
-    | WHILE ABREP CONDICAO FECHAP DOIS_PONTOS FIM_DE_LINHA COMANDO
+    | WHILE CONDICAO DOIS_PONTOS FIM_DE_LINHA
+    {
+        printf("while (%s) {\n", $2);
+    }
+   | WHILE ABREP CONDICAO FECHAP ABRECHAVE  FIM_DE_LINHA
     {
         printf("while (%s) {\n", $3);
-        printf("%s\n", $6);
-        printf("}\n");
     }
-    | WHILE CONDICAO DOIS_PONTOS FIM_DE_LINHA COMANDO
+    | FECHACHAVE FIM_DE_LINHA
+    { 
+         printf("}\n");
+    }
+    |DEF VALOR ABREP VALOR VIRGULA VALOR FECHAP FIM_DE_LINHA
     {
-        printf("while (%s) {\n", $2);
-        printf("%s\n", $5);
-        printf("}\n");
-    }
-    ;
-    | WHILE VALOR DOIS_PONTOS FIM_DE_LINHA COMANDO
+       printf("function %s (%s,%s);\n", $2,$4,$6);  
+    } 
+    |DEF VALOR  ABREP FECHAP FIM_DE_LINHA
     {
-        printf("while (%s) {\n", $2);
-        printf("%s\n", $5);
-        printf("}\n");
+       printf("function %s ();\n", $2);  
     }
+    |DEF VALOR ABREP VALOR FECHAP FIM_DE_LINHA
+    {
+       printf("function %s (%s);\n", $2,$4);  
+    } 
+    |DEF VALOR ABREP VALOR FECHAP ABRECHAVE FIM_DE_LINHA 
+    {
+       printf("function %s (%s){\n", $2,$4);  
+    } 
     ;
+
 
 CONDICAO : ID MAIOR VALOR {
     char *temp = (char *)malloc(strlen($1) + strlen($3) + strlen(" > ") + 1);

@@ -21,11 +21,14 @@ STRING \"[^"]*\"
 IDENTIFICADOR {LETRA}+
 
 %%
-
+"def"       { return DEF; }
+"return"    { return RETURN; }
 ","          { return VIRGULA; }
 "print"      { return PRINT; }
 "("          { return ABREP; }
 ")"          { return FECHAP; }
+"{"          { return ABRECHAVE; }
+"}"          { return FECHACHAVE; }
 "="          { return ATRIB; }
 "+="          { return MAISIGUAL; }
 "if"         { return IF; } 

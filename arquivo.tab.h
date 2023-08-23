@@ -57,7 +57,11 @@
      IGUAL = 273,
      WHILE = 274,
      MAISIGUAL = 275,
-     DOIS_PONTOS = 276
+     DOIS_PONTOS = 276,
+     ABRECHAVE = 277,
+     FECHACHAVE = 278,
+     DEF = 279,
+     RETURN = 280
    };
 #endif
 
@@ -75,7 +79,7 @@ typedef union YYSTYPE
 
 
 /* Line 1676 of yacc.c  */
-#line 79 "arquivo.tab.h"
+#line 83 "arquivo.tab.h"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */

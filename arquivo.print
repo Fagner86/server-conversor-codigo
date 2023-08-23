@@ -18,12 +18,17 @@ else
     print("O numero e zero.")  
 x = 'oiii'
 
+def comduas(x,r)
+def comuma(x){
+}
+def sem()
+
 print("x")
 print(34456567)     
 contador = 0
-while contador:
-    print(Contador)
-    print(Contado)
-
+x = 0
+while contador === 7:
+    print(x)
+    x = 0
 print(Contador)
   
