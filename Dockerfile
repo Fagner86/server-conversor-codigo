@@ -10,6 +10,8 @@ RUN npm install
 
 # Install flex
 RUN apt-get update && apt-get install -y flex
+RUN apt-get update && apt-get install -y bison
+
 
 COPY . .
 
