@@ -1,6 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const { spawn } = require('child_process');
+const { exec } = require('child_process');
 const path = require('path');
 const fs = require('fs');
 const cors = require('cors');
@@ -18,43 +18,52 @@ const filePath = path.join(__dirname, 'arquivo.print'); // Define o caminho do a
 app.post('/converter', (req, res) => {
   const codeObject = req.body;
   const code = codeObject.code;
-  console.log('chegou aqui', code);
+  console.log('Received code:', code);
 
   fs.writeFileSync(filePath, code); // Sobrescreve o arquivo com o novo conteúdo
   fs.appendFileSync(filePath, '\n');
 
-
   console.log('Code written to arquivo.print');
 
-  const parserPath = path.join(__dirname, './parser.exe');
-  console.log('Executing parser.exe:', parserPath);
-
-  const parser = spawn(parserPath, [filePath]);
-
-  let output = '';
-  let isError = false;
-
-  parser.stdout.on('data', (data) => {
-    console.log('Parser output data:', data.toString());
-    output += data.toString();
-  });
-
-  parser.stderr.on('data', (data) => {
-    console.error('Parser error:', data.toString());
-    isError = true;
-  });
-
-  parser.on('close', (code) => {
-    console.log('Parser process closed with code:', code);
-
-    // Limpa o conteúdo do arquivo, mas mantém o arquivo em si
-    fs.writeFileSync(filePath, '');
-
-    if (isError) {
-      res.send(output);
-    } else {
-      res.send(output);
+  // Compilar o analisador léxico (Flex)
+  exec('flex lexer.l', (error, stdout, stderr) => {
+    if (error) {
+      console.error('Flex compilation error:', error);
+      res.status(500).send('Error during compilation');
+      return;
     }
+
+    // Compilar o analisador sintático (Bison)
+    exec('bison -d arquivo.y', (error, stdout, stderr) => {
+      if (error) {
+        console.error('Bison compilation error:', error);
+        res.status(500).send('Error during compilation');
+        return;
+      }
+
+      // Compilar o programa principal
+      exec('gcc -o parser arquivo.tab.c -lfl', (error, stdout, stderr) => {
+        if (error) {
+          console.error('Parser compilation error:', error);
+          res.status(500).send('Error during compilation');
+          return;
+        }
+
+        // Executar o programa com um arquivo de entrada
+        exec(`./parser ${filePath}`, (error, stdout, stderr) => {
+          if (error) {
+            console.error('Execution error:', error);
+            res.status(500).send('Error during execution');
+            return;
+          }
+
+          // Limpa o conteúdo do arquivo, mas mantém o arquivo em si
+          fs.writeFileSync(filePath, '');
+
+          res.send(stdout);
+        });
+      });
+    });
   });
 });
 
