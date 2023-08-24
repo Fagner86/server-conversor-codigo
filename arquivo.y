@@ -11,14 +11,18 @@
 }
 
 
-%token<str> PRINT ABREP FECHAP VIRGULA ID STR NUM FIM_ENTRADA FIM_DE_LINHA ATRIB IF ELIF ELSE MAIOR MENOR IGUAL WHILE MAISIGUAL DOIS_PONTOS ABRECHAVE FECHACHAVE DEF RETURN
-%type<str> COMANDOS COMANDO VARIAVEIS VALOR CONDICAO
+%token<str> PRINT ABREP FECHAP VIRGULA ID STR NUM FIM_ENTRADA FIM_DE_LINHA ATRIB IF ELIF ELSE MAIOR MENOR IGUAL WHILE MAISIGUAL DOIS_PONTOS ABRECHAVE FECHACHAVE DEF RETURN ESPACO
+%type<str> COMANDOS COMANDO VARIAVEIS VALOR CONDICAO DENTRO_DO_WHILE
 
 %%
 
 COMANDOS : COMANDO
          | COMANDOS COMANDO
          ;
+
+DENTRO_DO_WHILE : COMANDO
+                | DENTRO_DO_WHILE COMANDO
+                ;
 
 VARIAVEIS : VALOR
           | ID ATRIB VALOR
@@ -78,18 +82,6 @@ COMANDO : PRINT ABREP VARIAVEIS FECHAP FIM_DE_LINHA
     {
         printf("} else if (%s) {\n", $2);
     }
-    |WHILE CONDICAO DOIS_PONTOS FIM_DE_LINHA
-    {
-        printf("while (%s) {\n", $2);
-    }
-   | WHILE ABREP CONDICAO FECHAP ABRECHAVE  FIM_DE_LINHA
-    {
-        printf("while (%s) {\n", $3);
-    }
-    | FECHACHAVE FIM_DE_LINHA
-    { 
-         printf("}\n");
-    }
     |DEF VALOR ABREP VALOR VIRGULA VALOR FECHAP FIM_DE_LINHA
     {
        printf("function %s (%s,%s);\n", $2,$4,$6);  
@@ -106,6 +98,23 @@ COMANDO : PRINT ABREP VARIAVEIS FECHAP FIM_DE_LINHA
     {
        printf("function %s (%s){\n", $2,$4);  
     } 
+    | WHILE ABREP CONDICAO
+    {
+            printf("while (%s) {\n", $3);
+    }
+    FECHAP ABRECHAVE FIM_DE_LINHA DENTRO_DO_WHILE FECHACHAVE 
+    {
+            printf("}\n");
+    }
+    FIM_DE_LINHA
+    |WHILE CONDICAO DOIS_PONTOS FIM_DE_LINHA 
+    {
+        printf("while (%s) {\n", $2);
+    } DENTRO_DO_WHILE 
+    {
+            printf("}\n");
+    }
+    FIM_DE_LINHA 
     ;
 
 

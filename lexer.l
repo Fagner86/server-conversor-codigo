@@ -43,6 +43,8 @@ IDENTIFICADOR {LETRA}+
 {STRING}     { yylval.str = strdup(yytext); return STR;}
 {STRING_SIMPLES} { yylval.str = strdup(yytext); return STR;}
 {NUMERO}     { yylval.str = strdup(yytext); return NUM; }
+{ESPACO}     { yylval.str = strdup(yytext); return ESPACO; }
+
 <<EOF>>      { return FIM_ENTRADA; }
 {ESPACO}+   { /* Ignore whitespace */ }
 .           { yyerror("Token desconhecido."); }

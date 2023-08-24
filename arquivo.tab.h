@@ -61,7 +61,8 @@
      ABRECHAVE = 277,
      FECHACHAVE = 278,
      DEF = 279,
-     RETURN = 280
+     RETURN = 280,
+     ESPACO = 281
    };
 #endif
 
@@ -79,7 +80,7 @@ typedef union YYSTYPE
 
 
 /* Line 1676 of yacc.c  */
-#line 83 "arquivo.tab.h"
+#line 84 "arquivo.tab.h"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
