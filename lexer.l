@@ -31,20 +31,22 @@ IDENTIFICADOR {LETRA}+
 "}"          { return FECHACHAVE; }
 "="          { return ATRIB; }
 "+="          { return MAISIGUAL; }
+"+"          { return MAIS; }
+"-"          { return MENOS; }
 "if"         { return IF; } 
 "elif"       { return ELIF; }
 "else"       { return ELSE; }
 ">"          { return MAIOR; }
+"<="          { return MENORIGUAL; }
+">="          { return MAIORIGUAL; }
 "<"          { return MENOR; }
-"==="         { return IGUAL; }
+"=="         { return IGUAL; }
 "while"      { return WHILE; }
 ":"          { return DOIS_PONTOS; }
 {IDENTIFICADOR} { yylval.str = strdup(yytext); return ID;}
 {STRING}     { yylval.str = strdup(yytext); return STR;}
 {STRING_SIMPLES} { yylval.str = strdup(yytext); return STR;}
 {NUMERO}     { yylval.str = strdup(yytext); return NUM; }
-{ESPACO}     { yylval.str = strdup(yytext); return ESPACO; }
-
 <<EOF>>      { return FIM_ENTRADA; }
 {ESPACO}+   { /* Ignore whitespace */ }
 .           { yyerror("Token desconhecido."); }

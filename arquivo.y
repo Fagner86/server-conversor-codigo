@@ -11,37 +11,85 @@
 }
 
 
-%token<str> PRINT ABREP FECHAP VIRGULA ID STR NUM FIM_ENTRADA FIM_DE_LINHA ATRIB IF ELIF ELSE MAIOR MENOR IGUAL WHILE MAISIGUAL DOIS_PONTOS ABRECHAVE FECHACHAVE DEF RETURN ESPACO
-%type<str> COMANDOS COMANDO VARIAVEIS VALOR CONDICAO DENTRO_DO_WHILE
+%token<str> PRINT ABREP FECHAP VIRGULA ID STR NUM FIM_ENTRADA MAIORIGUAL MENOS FIM_DE_LINHA MAIS ATRIB IF ELIF ELSE MAIOR MENORIGUAL MENOR IGUAL WHILE MAISIGUAL DOIS_PONTOS ABRECHAVE FECHACHAVE DEF RETURN ESPACO
+%type<str> COMANDOS VALOR CHAMAR_FUNCAO COMANDO_DEF COMANDO_PRINT COMANDO_VARIAVEIS_SEM_D CONDICAO COMANDO_IF_ELSE VARIAVEIS COMANDO_VARIAVEIS COMANDO_WHILE DENTRO_DO_WHILE
 
 %%
 
-COMANDOS : COMANDO
-         | COMANDOS COMANDO
+COMANDOS : COMANDO_DEF
+         | COMANDOS COMANDO_DEF
+         | COMANDO_PRINT
+         | COMANDOS COMANDO_PRINT
+         | COMANDO_IF_ELSE
+         | COMANDOS COMANDO_IF_ELSE
+         | COMANDO_VARIAVEIS
+         | COMANDOS COMANDO_VARIAVEIS
+         | COMANDO_WHILE
+         | COMANDOS COMANDO_WHILE
+         | CHAMAR_FUNCAO
+         | COMANDOS CHAMAR_FUNCAO
          ;
 
-DENTRO_DO_WHILE : COMANDO
-                | DENTRO_DO_WHILE COMANDO
+DENTRO_DO_WHILE : COMANDO_PRINT
+                | DENTRO_DO_WHILE COMANDO_PRINT
+                | COMANDO_IF_ELSE 
+                | DENTRO_DO_WHILE COMANDO_IF_ELSE
+                | COMANDO_VARIAVEIS_SEM_D
+                | DENTRO_DO_WHILE COMANDO_VARIAVEIS_SEM_D
                 ;
 
 VARIAVEIS : VALOR
-          | ID ATRIB VALOR
-          | ID ATRIB VALOR VIRGULA VARIAVEIS
+          | ID ATRIB VALOR 
+          | ID ATRIB VALOR VARIAVEIS
           ;
 
-COMANDO : PRINT ABREP VARIAVEIS FECHAP FIM_DE_LINHA
+COMANDO_DEF : DEF VALOR ABREP VALOR VIRGULA VALOR FECHAP FIM_DE_LINHA
+    {
+       printf("function %s(%s,%s);\n", $2,$4,$6);  
+    } 
+    |
+    DEF VALOR ABREP VALOR VIRGULA VALOR FECHAP DOIS_PONTOS FIM_DE_LINHA
+    {
+       printf("function %s(%s,%s){\n", $2,$4,$6);  
+    }
+    |
+    DEF VALOR  ABREP FECHAP FIM_DE_LINHA
+    {
+       printf("function %s();\n", $2);  
+    }
+    |DEF VALOR ABREP VALOR FECHAP FIM_DE_LINHA
+    {
+       printf("function %s(%s);\n", $2,$4);  
+    } 
+    |DEF VALOR ABREP VALOR FECHAP DOIS_PONTOS FIM_DE_LINHA
+    {
+       printf("function %s(%s);\n", $2,$4);  
+    } 
+    |DEF VALOR ABREP VALOR FECHAP ABRECHAVE FIM_DE_LINHA 
+    {
+       printf("function %s(%s){\n", $2,$4);  
+    } 
+    |RETURN VALOR FIM_DE_LINHA
+    {
+       printf("return %s;\n}\n",$2);  
+    } 
+    ;
+
+COMANDO_PRINT : PRINT  ABREP VARIAVEIS FECHAP FIM_DE_LINHA
     { 
         printf("console.log(%s);\n", $3);
     }
-    | ID ATRIB VALOR FIM_DE_LINHA
+    |PRINT  ABREP FECHAP FIM_DE_LINHA
+    { 
+        printf("console.log();\n");
+    }  
+    | PRINT  ABREP VARIAVEIS VIRGULA  VALOR FECHAP FIM_DE_LINHA
     {
-        printf("let %s = %s;\n", $1, $3);
-    } 
-    | ID ATRIB CONDICAO FIM_DE_LINHA
-    {
-        printf("let %s;\nif (%s) {\n", $1, $3);
+                printf("console.log(%s,%s);\n", $3,$5);
     }
-    | IF CONDICAO FIM_DE_LINHA
+    ;
+
+COMANDO_IF_ELSE :  IF CONDICAO FIM_DE_LINHA
     {
         printf("if (%s) {\n", $2);
     }
@@ -82,27 +130,53 @@ COMANDO : PRINT ABREP VARIAVEIS FECHAP FIM_DE_LINHA
     {
         printf("} else if (%s) {\n", $2);
     }
-    |DEF VALOR ABREP VALOR VIRGULA VALOR FECHAP FIM_DE_LINHA
+    ;
+
+COMANDO_VARIAVEIS : ID ATRIB VALOR FIM_DE_LINHA
     {
-       printf("function %s (%s,%s);\n", $2,$4,$6);  
+        printf("let %s = %s;\n", $1, $3);
     } 
-    |DEF VALOR  ABREP FECHAP FIM_DE_LINHA
+    |
+    ID ATRIB VALOR MAIS VALOR FIM_DE_LINHA
     {
-       printf("function %s ();\n", $2);  
+        printf("let %s = %s + %s;\n", $1, $3, $5);
+    } 
+    |
+    ID ATRIB VALOR MENOS VALOR FIM_DE_LINHA
+    {
+        printf("let %s = %s - %s;\n", $1, $3, $5);
+    } 
+    |
+    ID ATRIB CONDICAO FIM_DE_LINHA
+    {
+        printf("let %s;\nif (%s) {\n", $1, $3);
     }
-    |DEF VALOR ABREP VALOR FECHAP FIM_DE_LINHA
+    ;
+
+COMANDO_VARIAVEIS_SEM_D : ID ATRIB VALOR FIM_DE_LINHA
     {
-       printf("function %s (%s);\n", $2,$4);  
-    } 
-    |DEF VALOR ABREP VALOR FECHAP ABRECHAVE FIM_DE_LINHA 
+        printf(" %s = %s;\n", $1, $3);
+    }
+    | ID MAISIGUAL VALOR FIM_DE_LINHA
     {
-       printf("function %s (%s){\n", $2,$4);  
-    } 
-    | WHILE ABREP CONDICAO
+        printf(" %s++;\n", $1);
+    }
+    ;
+CHAMAR_FUNCAO : ID ATRIB VALOR ABREP VALOR VIRGULA VALOR FECHAP FIM_DE_LINHA
+            {
+                 printf("let %s = %s(%s,%s)\n", $1, $3,$5,$7);
+            }
+            |ID ATRIB VALOR ABREP VALOR FECHAP FIM_DE_LINHA
+            {
+                 printf("let %s = %s(%s)\n", $1, $3,$5);
+            }
+;
+
+COMANDO_WHILE : WHILE ABREP CONDICAO
     {
             printf("while (%s) {\n", $3);
     }
-    FECHAP ABRECHAVE FIM_DE_LINHA DENTRO_DO_WHILE FECHACHAVE 
+    FECHAP ABRECHAVE FIM_DE_LINHA FECHACHAVE 
     {
             printf("}\n");
     }
@@ -110,13 +184,11 @@ COMANDO : PRINT ABREP VARIAVEIS FECHAP FIM_DE_LINHA
     |WHILE CONDICAO DOIS_PONTOS FIM_DE_LINHA 
     {
         printf("while (%s) {\n", $2);
-    } DENTRO_DO_WHILE 
+    }DENTRO_DO_WHILE
     {
             printf("}\n");
-    }
-    FIM_DE_LINHA 
+    }FIM_DE_LINHA
     ;
-
 
 CONDICAO : ID MAIOR VALOR {
     char *temp = (char *)malloc(strlen($1) + strlen($3) + strlen(" > ") + 1);
@@ -131,6 +203,14 @@ CONDICAO : ID MAIOR VALOR {
 | ID IGUAL VALOR {
     char *temp = (char *)malloc(strlen($1) + strlen($3) + strlen(" === ") + 1);
     sprintf(temp, "%s === %s", $1, $3);
+    $$ = temp;
+}| ID MENORIGUAL VALOR {
+    char *temp = (char *)malloc(strlen($1) + strlen($3) + strlen(" <= ") + 1);
+    sprintf(temp, "%s <= %s", $1, $3);
+    $$ = temp;
+}| ID MAIORIGUAL VALOR {
+    char *temp = (char *)malloc(strlen($1) + strlen($3) + strlen(" >= ") + 1);
+    sprintf(temp, "%s >= %s", $1, $3);
     $$ = temp;
 };
 

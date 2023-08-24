@@ -1,8 +1,8 @@
-while contador > 7: 
-    x = contador
-x = contador
-print(jshdjs)
+def comduas(x, r):
+    soma = x + r
+    return soma
 
- xSDA = conta
-print(jshdjs)
-  
+x = 5
+r = 6
+conta = comduas(x, r)
+print(conta)

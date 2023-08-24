@@ -47,22 +47,26 @@
      STR = 263,
      NUM = 264,
      FIM_ENTRADA = 265,
-     FIM_DE_LINHA = 266,
-     ATRIB = 267,
-     IF = 268,
-     ELIF = 269,
-     ELSE = 270,
-     MAIOR = 271,
-     MENOR = 272,
-     IGUAL = 273,
-     WHILE = 274,
-     MAISIGUAL = 275,
-     DOIS_PONTOS = 276,
-     ABRECHAVE = 277,
-     FECHACHAVE = 278,
-     DEF = 279,
-     RETURN = 280,
-     ESPACO = 281
+     MAIORIGUAL = 266,
+     MENOS = 267,
+     FIM_DE_LINHA = 268,
+     MAIS = 269,
+     ATRIB = 270,
+     IF = 271,
+     ELIF = 272,
+     ELSE = 273,
+     MAIOR = 274,
+     MENORIGUAL = 275,
+     MENOR = 276,
+     IGUAL = 277,
+     WHILE = 278,
+     MAISIGUAL = 279,
+     DOIS_PONTOS = 280,
+     ABRECHAVE = 281,
+     FECHACHAVE = 282,
+     DEF = 283,
+     RETURN = 284,
+     ESPACO = 285
    };
 #endif
 
@@ -80,7 +84,7 @@ typedef union YYSTYPE
 
 
 /* Line 1676 of yacc.c  */
-#line 84 "arquivo.tab.h"
+#line 88 "arquivo.tab.h"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
