@@ -17,8 +17,13 @@ const filePath = path.join(__dirname, 'arquivo.print'); // Define o caminho do a
 
 app.post('/converter', (req, res) => {
   const codeObject = req.body;
-  const code = codeObject.code;
-  console.log('Received code:', code);
+  let code = codeObject.code.trim(); // Remove linhas em branco no início e final
+
+  if (code.startsWith('\n')) {
+    code = code.substring(1); // Remove a primeira quebra de linha, se existir
+  }
+
+  console.log('Código recebido:', code);
 
   fs.writeFileSync(filePath, code); // Sobrescreve o arquivo com o novo conteúdo
   fs.appendFileSync(filePath, '\n');
