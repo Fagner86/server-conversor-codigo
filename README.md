@@ -9,7 +9,7 @@ Ele visa permitir que desenvolvedores aproveitem a lógica de seus programas Pyt
 ### Online
 Existem duas maneiras de utilizar o analisador lexa, uma online e outra offline.
 
-###Versão disponibilizada online: 
+### Versão disponibilizada online: 
 Na primeira requisição, pode levar um pouco mais de tempo devido ao servidor, mas aguarde que o sistema irá funcionar.
 Acesse o [Conversor Online](https://conversor-codigo.onrender.com/). Aguarde o carregamento inicial.
 
@@ -33,7 +33,7 @@ Acesse o [Conversor Online](https://conversor-codigo.onrender.com/). Aguarde o c
    gcc -o parser arquivo.tab.c
    parser.exe arquivo.print 
 
-##Exemplos entrada e saidas:
+## Exemplos entrada e saidas:
 
 1. Entrada A (exemplo.print):
    ```sh
@@ -139,11 +139,11 @@ Acesse o [Conversor Online](https://conversor-codigo.onrender.com/). Aguarde o c
     let conta = comduas(x,r)
     console.log(conta)
 
-##Limitações em Relação à Linguagem Original
+## Limitações em Relação à Linguagem Original
 
 Limitações Sintáticas e Semânticas: O analisador lexa se baseia nas regras definidas na gramática e nos tokens reconhecidos pelo lexer. Portanto, ele pode não lidar adequadamente com construções não previstas na gramática ou com uso incorreto dos tokens.
 Tratamento de Erros: A maneira como erros são tratados no código não é completa. Erros podem ser mal reportados ou não tratados corretamente.
 Limitações na Sintaxe: A sintaxe da linguagem customizada parece ser uma mistura de Python e JavaScript. Isso pode levar a situações em que a semântica original é preservada, mas a sintaxe resultante em JavaScript não é sempre a mais idiomática.
 
-##Conclusão
+## Conclusão
 O Conversor Python para JavaScript é útil para traduzir pequenos trechos de código Python para JavaScript. Esteja ciente das limitações e faça testes antes de usá-lo em projetos maiores.
