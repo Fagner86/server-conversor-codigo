@@ -35,107 +35,109 @@ Acesse o [Conversor Online](https://conversor-codigo.onrender.com/). Aguarde o c
 
 ##Exemplos entrada e saidas:
 
-Entrada A (exemplo.print):
-print("x")
-print(34456567)
-print(10)
+1. Entrada A (exemplo.print):
+   ```sh
+   print("x")
+   print(34456567)
+   print(10)
+   x = 'oiii'
+   numero = 10
 
-x = 'oiii'
-numero = 10
-Saída A (gerada em JavaScript):
-console.log("x");
-console.log(34456567);
-console.log(10);
-let x = 'oiii';
-let numero = 10;
+2. Saída A (gerada em JavaScript):
+   ```sh
+   console.log("x");
+   console.log(34456567);
+   console.log(10);
+   let x = 'oiii';
+   let numero = 10;
 
-
-
-Entrada B (exemplo.print):
-if numero > 0
+3. Entrada B (exemplo.print):
+   ```sh
+   if numero > 0
        print("O numero e positivo.")
-
-elif numero < 0
+   elif numero < 0
     print("O numero e negativo.")
-
-else
+   else
     print("O numero e zero.")  
 
-Saída B (gerada em JavaScript):
-if (numero > 0) {
-console.log("O numero e positivo.");
-} else if (numero < 0) {
-console.log("O numero e negativo.");
-} else {
-console.log("O numero e zero.");
+4. Saída B (gerada em JavaScript):
+   ```sh
+   if (numero > 0) {
+   console.log("O numero e positivo.");
+   } else if (numero < 0) {
+   console.log("O numero e negativo.");
+   } else {
+   console.log("O numero e zero.");
 
-
-
-Entrada C (exemplo.print):
-contador = 0
-
-while contador < 7:
+5. Entrada C (exemplo.print):
+   ```sh
+   contador = 0
+   while contador < 7:
     print(contador)
     contador += 1
 
-Saída C (gerada em JavaScript):
-let contador = 0;
-while (contador < 7) {
-console.log(contador);
- contador++;
-
-Entrada D (exemplo.print):
-contador = 0
-
-while contador <= 7:
+6. Saída C (gerada em JavaScript):
+   ```sh
+   let contador = 0;
+   while (contador < 7) {
+   console.log(contador);
+   contador++;
+   
+7. Entrada D (exemplo.print):
+   ```sh
+   contador = 0
+   while contador <= 7:
     print(contador)
     contador += 1
-Saída D (gerada em JavaScript):
-let contador = 0;
-while (contador <= 7) {
-console.log(contador);
- contador++;
-}
-
-
-
-
-Entrada E (exemplo.print):
-def uma(x):
+8. Saída D (gerada em JavaScript):
+   ```sh
+   let contador = 0;
+   while (contador <= 7) {
+   console.log(contador);
+   contador++;
+   }
+9. Entrada E (exemplo.print):
+    ```sh
+    def uma(x):
     numero = x
     return numero
 
-x = 5
+    x = 5
 
-conta = uma(x)
-print(conta)
-Saída E (gerada em JavaScript):
-function uma(x);
-let numero = x;
-return numero;
-}
-let x = 5;
-let conta = uma(x)
-console.log(conta);
+    conta = uma(x)
+    print(conta)
+    
+10. Saída E (gerada em JavaScript):
+    ```sh
+    function uma(x);
+    let numero = x;
+    return numero;
+    }
+    let x = 5;
+    let conta = uma(x)
+    console.log(conta);
 
-Entrada F (exemplo.print):
-def comduas(x, r):
+11. Entrada F (exemplo.print):
+    ```sh
+    def comduas(x, r):
     soma = x + r
     return soma
 
-x = 5
-r = 6
-conta = comduas(x, r)
-print(conta)
-Saída F (gerada em JavaScript):
-function comduas(x,r){
-let soma = x + r;
-return soma;
-}
-let x = 5;
-let r = 6;
-let conta = comduas(x,r)
-console.log(conta)
+    x = 5
+    r = 6
+    conta = comduas(x, r)
+    print(conta)
+    
+12. Saída F (gerada em JavaScript):
+    ```sh
+    function comduas(x,r){
+    let soma = x + r;
+    return soma;
+    }
+    let x = 5;
+    let r = 6;
+    let conta = comduas(x,r)
+    console.log(conta)
 
 ##Limitações em Relação à Linguagem Original
 
