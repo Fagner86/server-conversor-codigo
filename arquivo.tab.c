@@ -2079,7 +2079,7 @@ int main(int argc, char **argv) {
     while (yyparse() == 0) {
     }
     
-    printf("PROGRAMA RECONHECIDO!!!\n");
+    printf("\n\n!!! Deu bom(:!!!\n");
     fclose(yyin);
     return 0;
 }
